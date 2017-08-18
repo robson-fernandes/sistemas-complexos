@@ -1,6 +1,14 @@
 library(igraph)
 
+#
+# Limpa workspace e variáveis
+#
+ls()
+rm(list=ls())
+graphics.off()
+
 network <- graph.empty (10, directed = FALSE)
+ecount(network)
 
 colection.edges <- c(1,2, 
                2,3, 
@@ -19,19 +27,46 @@ network <- add.edges(network, colection.edges)
 plot(network)
 
 #matriz de adjacências
-4/10 <- get.adjacency(network)
+matrixA <- get.adjacency(network)
 sum(matrixA)
 
+#<k> 
 #grau medio
-mean(degree(network))
+kMedio <- mean(degree(network))
 
 #grau
-grau <- degree(network)
+grau <- degree(network, mode = "all")
+
+plot(network, vertex.size=grau*5)
+
+#histograma
+h <- hist(grau, breaks = 1:vcount(network) - 1, main = "Histograma dos Graus")
+
 
 #densidade
 graph.density(network)
+edge_density(network, loops = FALSE)
 
-#Distribuição de grau e o respectivo gráfico
-network.dd <- degree_distribution(network)
-plot(network.dd, xlab="Grau",ylab="Frequência relativa",
-     type="p",col="blue",ylim=c(0,0.4))
+#Distribuição do Grau Médio - P(k)
+deg.dist <- degree_distribution(network,mode="all",
+                                cumulative=FALSE)
+
+plot(x=0:5,y=deg.dist, pch=19, cex=1.2,
+     xlab="Grau",
+     ylab="Frequencia",
+     type="p",
+     col="blue",
+     main = "Distribuição do Grau Médio")
+
+
+#Segundo Momento do Grau - <K>2
+grau <- grau^2
+sum.grau.square = sum(grau)
+total.grau <- length(grau)
+
+kQuadrado <- sum.grau.square / total.grau
+kQuadrado
+
+#Calcula da Variancia
+variancia <- kQuadrado - kMedio^2
+variancia
