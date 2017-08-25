@@ -26,6 +26,12 @@ network <- add.edges(network, colection.edges)
 
 plot(network)
 
+#Total de vértices
+n <- vcount(network)
+
+#Total de arestas
+m <- gsize(network)
+
 #matriz de adjacências
 matrixA <- get.adjacency(network)
 sum(matrixA)
@@ -40,12 +46,15 @@ grau <- degree(network, mode = "all")
 plot(network, vertex.size=grau*5)
 
 #histograma
-h <- hist(grau, breaks = 1:vcount(network) - 1, main = "Histograma dos Graus")
+h <- hist(grau, breaks = 1:vcount(network) - 1, main = "Histograma dos Graus", 
+          xlab = "Grau",
+          ylab="Frequência")
 
 
 #densidade
 graph.density(network)
 edge_density(network, loops = FALSE)
+
 
 #Distribuição do Grau Médio - P(k)
 deg.dist <- degree_distribution(network,mode="all",
